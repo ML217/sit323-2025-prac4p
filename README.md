@@ -17,10 +17,7 @@ mkdir 3234P
 ```bash
 npm install express
 ```
-## Run this microservice
-```bash
-node 4P.js
-```
+
 
 ## Designing and Implementing API Endpoints
 
@@ -28,85 +25,90 @@ node 4P.js
 In 4P.js, i have written following code:
 ```javascript
 const express = require('express');
-const app = express();
+const app= express();
 const port = 3000;
+app.use(express.json());
 
-// Addition
+//Number validation
+// function for number validation
+function isValidNumber(value) {
+    return !isNaN(value) && typeof value === 'number';
+}
+
+// Add additional endpoints
 app.get('/add', (req, res) => {
-    const { num1, num2 } = req.query;
-    if (!num1 || !num2) {
-        return res.status(400).json({ error: 'Missing parameter num1 or num2' });
+    const num1 = parseFloat(req.query.num1);
+    const num2 = parseFloat(req.query.num2);
+
+    if (!isValidNumber(num1) || !isValidNumber(num2)) {
+        return res.status(400).json({ error: 'Provide valid number!' });
     }
-    const result = parseFloat(num1) + parseFloat(num2);
-    if (isNaN(result)) {
-        return res.status(400).json({ error: 'The parameters num1 and num2 must be number' });
-    }
+
+    const result = num1 + num2;
     res.json({ result });
 });
 
-// Subduction
-app.get('/subtract', (req, res) => {
-    const { num1, num2 } = req.query;
-    if (!num1 || !num2) {
-        return res.status(400).json({ error: 'Missing parameter num1 or num2' });
+// minus endpoint
+app.get('/minus', (req, res) => {
+    const num1 = parseFloat(req.query.num1);
+    const num2 = parseFloat(req.query.num2);
+
+    if (!isValidNumber(num1) || !isValidNumber(num2)) {
+        return res.status(400).json({ error: 'Provide valid number!' });
     }
-    const result = parseFloat(num1) - parseFloat(num2);
-    if (isNaN(result)) {
-        return res.status(400).json({ error: 'The parameters num1 and num2 must be number' });
-    }
+
+    const result = num1 - num2;
     res.json({ result });
 });
 
-// Multiplication
+// multiply endpoint
 app.get('/multiply', (req, res) => {
-    const { num1, num2 } = req.query;
-    if (!num1 || !num2) {
-        return res.status(400).json({ error: 'Missing parameter num1 or num2' });
+    const num1 = parseFloat(req.query.num1);
+    const num2 = parseFloat(req.query.num2);
+
+    if (!isValidNumber(num1) || !isValidNumber(num2)) {
+        return res.status(400).json({ error: 'Provide valid number!' });
     }
-    const result = parseFloat(num1) * parseFloat(num2);
-    if (isNaN(result)) {
-        return res.status(400).json({ error: 'The parameters num1 and num2 must be number' });
-    }
+
+    const result = num1 * num2;
     res.json({ result });
 });
 
-// Division
+// divide endpoint
 app.get('/divide', (req, res) => {
-    const { num1, num2 } = req.query;
-    if (!num1 || !num2) {
-        return res.status(400).json({ error: 'Missing parameter num1 or num2' });
+    const num1 = parseFloat(req.query.num1);
+    const num2 = parseFloat(req.query.num2);
+
+    if (!isValidNumber(num1) || !isValidNumber(num2)) {
+        return res.status(400).json({ error: 'Provide valid number!' });
     }
-    const divisor = parseFloat(num2);
-    if (divisor === 0) {
-        return res.status(400).json({ error: 'num2 cannot be zero' });
+
+    if (num2 === 0) {
+        return res.status(400).json({ error: 'Zero cannot be divided.' });
     }
-    const result = parseFloat(num1) / divisor;
-    if (isNaN(result)) {
-        return res.status(400).json({ error: 'The parameters num1 and num2 must be number' });
-    }
+
+    const result = num1 / num2;
     res.json({ result });
 });
 
-// Start the server
+// make the server start
 app.listen(port, () => {
-    console.log(`The calculator microservice runs on: http://localhost:${port}`);
+    console.log(`This microservice running at http://localhost:${port}`);
 });
 ```
 
-### Running Microservices
-
-In the project root directory, start the microservice using the following command:
-
+### Run this microservice
+At last i written following code in terminal
 ```bash
-node app.js
+node 4P.js
 ```
 
-After successfully running, you will see the following output in the terminal:
-The calculator microservice runs on: http://localhost:3000
+if the running is successed, you will see the following output in the terminal:
+The microservice is running at http://localhost:3000
 
-At this point the interface can be accessed in a browser, for example:
+Now the interface could be accessed through the browser, here are some testing codes:
 
-- http://localhost:3000/add?num1=12&num2=6
-- http://localhost:3000/subtract?num1=16&num2=9
-- http://localhost:3000/multiply?num1=3&num2=18
-- http://localhost:3000/divide?num1=36&num2=6
+- http://localhost:3000/add?num1=2&num2=3
+- http://localhost:3000/minus?num1=10&num2=2
+- http://localhost:3000/multiply?num1=2&num2=6
+- http://localhost:3000/divide?num1=1&num2=0
